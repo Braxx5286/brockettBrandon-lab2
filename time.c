@@ -1,7 +1,15 @@
-#include <sys/time.h>
+time: time.o ipc.o main.o
+	$(CC) -o $@ $?
 
-double elapsed_time(struct timeval* start_time, struct timeval* end_time){
-    //TODO: return the difference between end_time and start_time.
-    
-    return 0.0;
-}
+time.o: time.c
+	$(CC) -c $?
+
+ipc.o: ipc.c
+	$(CC) -c $?
+
+main.o: main.c
+	$(CC) -c $?
+
+clean:
+	-rm -f *.o
+	@echo "All clean!"

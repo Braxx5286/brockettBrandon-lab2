@@ -1,4 +1,14 @@
 // TODO: add the appropriate head files here
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/ipc.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <sys/shm.h>
+#include "lab2.h"
 
 /************************************************************\
  * get_arguments - returns the command line arguments not
@@ -41,6 +51,17 @@ int main(int argc, char** argv)
     
     // TODO: call ipc_create to create shared memory region to which parent
     //       child have access.
+    // name this something
+    if (pid < 0) { /* error occurred */
+        fprintf(stderr, "Fork failed!");
+        return 2;}
+    /* fork a child process */
+    pid = fork();
+
+    if (pid < 0) { /* error occurred */
+        fprintf(stderr, "Fork failed!");
+        return 2;
+    }
 
     /* fork a child process */
     pid = fork();
@@ -51,22 +72,41 @@ int main(int argc, char** argv)
     }
     else if (pid == 0) { /*child process */
         // TODO: use gettimeofday to log the start time
+        gettimeofday(&start_time, NULL);
+        time_t start_time_microseconds = start_time.tv_usec;
 
-        // TODO: write the time to the IPC
+        // TODO: write the time to the IPC Pointer
+        }else { /* parent process */
+        wait(&status);
+        gettimeofday(&current_time,NULL);
+        printf("%s",start_time);
+        ipc_close();
+
+        // NOTE: DO NOT ALTER THE LINE BELOW.
+        printf("Elapsed time %.5f\n",elapsed_time(&start_time, &current_time));
         
         // TODO: get the list of arguments to be used in execvp() and 
         // execute execvp()
+        command_args = get_arguments(argc, argv);
+        execvp(command_args[0], command_args);
 
-    }
-    else { /* parent process */
+        // Shows that the child process has completed successfully
+        fprintf(stderr, "Child Process is Complete \n");
+        status = 0;
+
+    }   /* parent process */
         // TODO: have parent wait and get status of child.
         //       Use the variable status to store status of child. 
+        wait(status);
         
         // TODO: get the current time using gettimeofday
-        
+        //time_t current_time_microseconds_ current_time_tv_usec;
+        gettimeofday(&current_time, NULL);
         // TODO: read the start time from IPC
+        memcpy(&start_time, ipc_ptr, sizeof(time_t))
         
         // TODO: close IPC
+        ipc_close();
 
         // NOTE: DO NOT ALTER THE LINE BELOW.
         printf("Elapsed time %.5f\n",elapsed_time(&start_time, &current_time));
