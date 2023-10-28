@@ -66,40 +66,23 @@ int main(int argc, char** argv)
 
         // TODO: write the time to the IPC Pointer
         }else { /* parent process */
-        wait(NULL);
-        gettimeofday(&current_time,NULL);
-        printf("start_time: %ld seconds %ld microseconds\n", start_time.tv_sec, start_time.tv_usec);
-        ipc_close();
-
-        // NOTE: DO NOT ALTER THE LINE BELOW.
-        printf("Elapsed time %.5f\n",elapsed_time(&start_time, &current_time));
-        
-        // TODO: get the list of arguments to be used in execvp() and 
-        // execute execvp()
-        command_args = get_arguments(argc, argv);
-        execvp(command_args[0], command_args);
-
-        // Shows that the child process has completed successfully
-        fprintf(stderr, "Child Process is Complete \n");
-        status = 0;
-
-    }   /* parent process */
         // TODO: have parent wait and get status of child.
         //       Use the variable status to store status of child. 
-        wait(status);
-        
+        wait(&status);
         // TODO: get the current time using gettimeofday
-        //time_t current_time_microseconds_ current_time_tv_usec;
-        gettimeofday(&current_time, NULL);
+        gettimeofday(&current_time,NULL);
         // TODO: read the start time from IPC
-        memcpy(&start_time, ipc_ptr, sizeof(time_t))
-        
+        printf("%s",start_time);
         // TODO: close IPC
         ipc_close();
 
         // NOTE: DO NOT ALTER THE LINE BELOW.
         printf("Elapsed time %.5f\n",elapsed_time(&start_time, &current_time));
+
+
+
     
     
     return status;
+}
 }
