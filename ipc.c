@@ -41,7 +41,6 @@ char* ipc_create(int size){
     int_main();
     key_t key = ftok();
     size_t size = 1024 * 1024; //1MB
-
     int shm_id = shmget(); // Not sure what this is doing
     perror("shmget");
     exit(1);

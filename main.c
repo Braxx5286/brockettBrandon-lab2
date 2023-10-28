@@ -52,17 +52,6 @@ int main(int argc, char** argv)
     // TODO: call ipc_create to create shared memory region to which parent
     //       child have access.
     // name this something
-    if (pid < 0) { /* error occurred */
-        fprintf(stderr, "Fork failed!");
-        return 2;}
-    /* fork a child process */
-    pid = fork();
-
-    if (pid < 0) { /* error occurred */
-        fprintf(stderr, "Fork failed!");
-        return 2;
-    }
-
     /* fork a child process */
     pid = fork();
 
@@ -77,9 +66,9 @@ int main(int argc, char** argv)
 
         // TODO: write the time to the IPC Pointer
         }else { /* parent process */
-        wait(&status);
+        wait(NULL);
         gettimeofday(&current_time,NULL);
-        printf("%s",start_time);
+        printf("start_time: %ld seconds %ld microseconds\n", start_time.tv_sec, start_time.tv_usec);
         ipc_close();
 
         // NOTE: DO NOT ALTER THE LINE BELOW.
@@ -110,7 +99,7 @@ int main(int argc, char** argv)
 
         // NOTE: DO NOT ALTER THE LINE BELOW.
         printf("Elapsed time %.5f\n",elapsed_time(&start_time, &current_time));
-    }
+    
     
     return status;
 }
