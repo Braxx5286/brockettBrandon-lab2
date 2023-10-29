@@ -72,7 +72,7 @@ int main(int argc, char** argv)
         // TODO: get the current time using gettimeofday
         gettimeofday(&current_time,NULL);
         // TODO: read the start time from IPC
-        printf("%s",start_time);
+        printf("start_time: %ld seconds %ld microseconds\n", start_time.tv_sec, start_time.tv_usec);
         // TODO: close IPC
         ipc_close();
 
